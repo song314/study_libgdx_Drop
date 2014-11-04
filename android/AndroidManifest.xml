@@ -3,7 +3,6 @@
     package="com.badlogic.drop.android"
     android:versionCode="1"
     android:versionName="1.0" >
-
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="20" />
 
     <application
@@ -13,7 +12,7 @@
         android:theme="@style/GdxTheme" >
         <activity
             android:name="com.badlogic.drop.android.AndroidLauncher"
-            android:label="@string/app_name" 
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
