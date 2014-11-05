@@ -1,5 +1,6 @@
 package com.badlogic.drop;
 
+import com.badlogic.drop.model.TapBallManagerModel;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -10,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by tangsong on 11/5/14.
@@ -19,14 +23,14 @@ public class NotingButBall extends ApplicationAdapter {
     public static final String BUCKET_PNG = "bucket.png";
     public static final String DROP_WAV = "drop.wav";
     public static final String RAIN_MP3 = "rain.mp3";
-    public static final String WAV_BALL_HIT = "ball_hit_bound.wav";
+    public static final String WAV_BALL_HIT = "knocking_wall.mp3";
 
     public static final int WIDTH_BUCKET = 64;
     public static final int WIDTH_RAIN = 32;
     public static final int SPEED_MOVE = 100;
     private int mSpeed = SPEED_MOVE;
     public static final int SPEED_RAIN = 200;
-    public static final int SPEED_ADD = 100;
+    public static final int SPEED_ADD = 1;
     /**
      * 屏幕宽度
      */
@@ -36,19 +40,66 @@ public class NotingButBall extends ApplicationAdapter {
      */
     public static final int SCREEN_HEIGHT = 480;
     public boolean mDirection = true;
+    boolean mIsStart = false;
     private Texture mBall;
     private OrthographicCamera mCamera;
     private SpriteBatch mBatch;
     private Rectangle mBucketRect;
-
     private Sound mClickSound;
     private Sound mBallHitSound;
+    private long mCreateTime;
+    private TapBallManagerModel mTapModel;
+    private Sound mSoundFirstBlood;
+    private Sound mSound2;
+    private Sound mSound3;
+    private Sound mSound4;
+    private Sound mSound5;
+    private Sound mSoundShutDown;
 
     @Override
     public void create() {
+        mTapModel = new TapBallManagerModel();
+        final ArrayList<Sound> list = new ArrayList<Sound>();
+
+        mTapModel.setContinuousClickListener(new TapBallManagerModel.ContinuousClickListener() {
+            @Override
+            public void onContinuousClick(int count) {
+
+            }
+
+            @Override
+            public void onMultClick(int count) {
+                if (count - 1 < list.size()) {
+                    list.get(count - 1).play();
+                }
+            }
+
+            @Override
+            public void onFirstBlood() {
+                mSoundFirstBlood.play();
+            }
+
+            @Override
+            public void onShutDown() {
+                mSoundShutDown.play();
+            }
+        });
+
         mBall = new Texture(Gdx.files.internal(BUCKET_PNG));
         mClickSound = Gdx.audio.newSound(Gdx.files.internal(DROP_WAV));
-        mBallHitSound = Gdx.audio.newSound(Gdx.files.internal("game_start.wav"));
+        mBallHitSound = Gdx.audio.newSound(Gdx.files.internal(WAV_BALL_HIT));
+
+        mSoundFirstBlood = Gdx.audio.newSound(Gdx.files.internal("kill_1.mp3"));
+        mSound2 = Gdx.audio.newSound(Gdx.files.internal("kill_2.mp3"));
+        mSound3 = Gdx.audio.newSound(Gdx.files.internal("kill_3.mp3"));
+        mSound4 = Gdx.audio.newSound(Gdx.files.internal("kill_4.mp3"));
+        mSound5 = Gdx.audio.newSound(Gdx.files.internal("kill_5.mp3"));
+        mSoundShutDown = Gdx.audio.newSound(Gdx.files.internal("shut_down.mp3"));
+        list.add(mSound2);
+        list.add(mSound3);
+        list.add(mSound4);
+        list.add(mSound5);
+
 
         // create the mCamera and the SpriteBatch
         mCamera = new OrthographicCamera();
@@ -62,6 +113,8 @@ public class NotingButBall extends ApplicationAdapter {
         mBucketRect.height = WIDTH_BUCKET;
 
         Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
+
+        mCreateTime = TimeUtils.millis();
     }
 
     @Override
@@ -81,6 +134,15 @@ public class NotingButBall extends ApplicationAdapter {
         //————场景结束————
         mBatch.end();
 
+
+        if (TimeUtils.millis() - mCreateTime < 2000) {
+            return;
+        }
+
+        if (!mIsStart) {
+            mIsStart = true;
+            mTapModel.start();
+        }
 
         if (mDirection) {
             mBucketRect.x += mSpeed * Gdx.graphics.getDeltaTime();
@@ -113,8 +175,11 @@ public class NotingButBall extends ApplicationAdapter {
         public boolean touchDown(float x, float y, int pointer, int button) {
             if (mBucketRect.contains(UtilMath.getVirtue(Gdx.graphics.getWidth(), SCREEN_WIDTH, Gdx.input.getX()), UtilMath.getVirtue(Gdx.graphics.getWidth(), SCREEN_WIDTH, Gdx.input.getY()))) {
                 mSpeed += SPEED_ADD;
+                mTapModel.success();
                 mClickSound.play();
                 return true;
+            } else {
+                mTapModel.failed();
             }
             return false;
         }
