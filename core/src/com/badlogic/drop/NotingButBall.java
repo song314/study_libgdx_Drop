@@ -20,7 +20,8 @@ public class NotingButBall extends ApplicationAdapter {
     public static final int WIDTH_BUCKET = 64;
     public static final int WIDTH_RAIN = 32;
 
-    public static final int SPEED_MOVE = 500;
+    public static final int SPEED_MOVE = 100;
+    private int mSpeed = SPEED_MOVE;
     public static final int SPEED_RAIN = 200;
     /**
      * 屏幕宽度
@@ -69,11 +70,14 @@ public class NotingButBall extends ApplicationAdapter {
         //————场景结束————
         mBatch.end();
 
+        if (Gdx.input.isTouched() && mBucket.contains(Gdx.input.getX(), Gdx.input.getY())) {
+            mSpeed += 100;
+        }
 
         if (mDirection) {
-            mBucket.x += SPEED_MOVE * Gdx.graphics.getDeltaTime();
+            mBucket.x += mSpeed * Gdx.graphics.getDeltaTime();
         } else {
-            mBucket.x -= SPEED_MOVE * Gdx.graphics.getDeltaTime();
+            mBucket.x -= mSpeed * Gdx.graphics.getDeltaTime();
         }
 
         // make sure the mBucket stays within the screen bounds
