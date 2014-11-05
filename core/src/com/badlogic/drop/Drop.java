@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 
 public class Drop extends ApplicationAdapter {
 
-    private ApplicationAdapter mAdapter = new RainGameModel();
+    private ApplicationAdapter mAdapter = new Box2dModel();
 
     /**
      * 资源初始化
