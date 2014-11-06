@@ -1,4 +1,4 @@
-package com.badlogic.drop;
+package com.badlogic.drop.adaper;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
