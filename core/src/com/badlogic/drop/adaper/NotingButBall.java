@@ -1,5 +1,6 @@
 package com.badlogic.drop.adaper;
 
+import com.badlogic.drop.R;
 import com.badlogic.drop.UtilMath;
 import com.badlogic.drop.model.TapBallManagerModel;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -20,11 +21,6 @@ import java.util.ArrayList;
  * Created by tangsong on 11/5/14.
  */
 public class NotingButBall extends ApplicationAdapter {
-
-    public static final String BUCKET_PNG = "bucket.png";
-    public static final String DROP_WAV = "drop.wav";
-    public static final String RAIN_MP3 = "rain.mp3";
-    public static final String WAV_BALL_HIT = "knocking_wall.mp3";
 
     public static final int WIDTH_BUCKET = 64;
     public static final int WIDTH_RAIN = 32;
@@ -86,9 +82,9 @@ public class NotingButBall extends ApplicationAdapter {
             }
         });
 
-        mBall = new Texture(Gdx.files.internal(BUCKET_PNG));
-        mClickSound = Gdx.audio.newSound(Gdx.files.internal(DROP_WAV));
-        mBallHitSound = Gdx.audio.newSound(Gdx.files.internal(WAV_BALL_HIT));
+        mBall = new Texture(Gdx.files.internal(R.BUCKET_PNG));
+        mClickSound = Gdx.audio.newSound(Gdx.files.internal(R.DROP_WAV));
+        mBallHitSound = Gdx.audio.newSound(Gdx.files.internal(R.WAV_BALL_HIT));
 
         mSoundFirstBlood = Gdx.audio.newSound(Gdx.files.internal("kill_1.mp3"));
         mSound2 = Gdx.audio.newSound(Gdx.files.internal("kill_2.mp3"));

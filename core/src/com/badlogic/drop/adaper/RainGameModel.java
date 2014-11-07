@@ -1,5 +1,6 @@
 package com.badlogic.drop.adaper;
 
+import com.badlogic.drop.R;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,11 +22,6 @@ import java.util.Iterator;
  * Created by tangsong on 11/5/14.
  */
 public class RainGameModel extends ApplicationAdapter {
-
-    public static final String DROPLET_PNG = "droplet.png";
-    public static final String BUCKET_PNG = "bucket.png";
-    public static final String DROP_WAV = "drop.wav";
-    public static final String RAIN_MP3 = "rain.mp3";
 
     public static final int WIDTH_BUCKET = 64;
     public static final int WIDTH_RAIN = 32;
@@ -76,13 +72,13 @@ public class RainGameModel extends ApplicationAdapter {
     private long mLastDropTime;
 
     public void create() {
-        mDropImage = new Texture(Gdx.files.internal(DROPLET_PNG));
-        mBucketImage = new Texture(Gdx.files.internal(BUCKET_PNG));
+        mDropImage = new Texture(Gdx.files.internal(R.DROPLET_PNG));
+        mBucketImage = new Texture(Gdx.files.internal(R.BUCKET_PNG));
 
         // 加载水滴声效和背景下雨声
         // load the drop sound effect and the rain background "music"
-        mDropSound = Gdx.audio.newSound(Gdx.files.internal(DROP_WAV));
-        mRainMusic = Gdx.audio.newMusic(Gdx.files.internal(RAIN_MP3));
+        mDropSound = Gdx.audio.newSound(Gdx.files.internal(R.DROP_WAV));
+        mRainMusic = Gdx.audio.newMusic(Gdx.files.internal(R.RAIN_MP3));
 
         //设置背景音乐一直循环
         // start the playback of the background music immediately
