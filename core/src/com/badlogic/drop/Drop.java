@@ -1,11 +1,10 @@
 package com.badlogic.drop;
 
-import com.badlogic.drop.adaper.NotingButBall;
 import com.badlogic.gdx.ApplicationAdapter;
 
 public class Drop extends ApplicationAdapter {
 
-    private ApplicationAdapter mAdapter = new NotingButBall();
+    private ApplicationAdapter mAdapter = new UiSample();
 
     /**
      * 资源初始化
